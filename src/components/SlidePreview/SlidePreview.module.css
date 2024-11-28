@@ -1,0 +1,79 @@
+.slidePreview {
+  --slide-height: 80px;
+  --slide-container-height: calc(var(--slide-height) + 16px); /* 16px = stacked files*/
+  margin: var(--padding-md) 0 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: var(--slide-container-height);
+  position: relative;
+  .slidePreview__noSlides {
+    display: flex;
+    flex: 0 0 100px;
+    justify-content: center;
+    align-items: center;
+    height: var(--slide-height);
+    width: 100px;
+    box-sizing: content-box;
+    padding: var(--padding-sm);
+    text-align: center;
+    border: 1px dashed var(--figma-color-border-disabled);
+    border-radius: var(--radius-default);
+    color: var(--figma-color-text-disabled);
+    transition: opacity 0.5s ease-out 0.1s;
+  }
+  .slidePreview__slides {
+    top: 0;
+    height: 100%;
+    width: calc(var(--slide-height) * var(--slide-ratio));
+    position: absolute;
+    :nth-child(1) { --nth-child: 1; }
+    :nth-child(2) { --nth-child: 2; }
+    :nth-child(3) { --nth-child: 3; }
+    :nth-child(4) { --nth-child: 4; }
+    :nth-child(5) { --nth-child: 5; }
+    :nth-child(6) { --nth-child: 6; }
+    :nth-child(7) { --nth-child: 7; }
+    :nth-child(8) { --nth-child: 8; }
+    :nth-child(9) { --nth-child: 9; }
+    :nth-child(10) { --nth-child: 10; }
+    .slidePreview__slide {
+      z-index: calc(10 - var(--nth-child));
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(var(--slide-height));
+      width: calc(var(--slide-height) * var(--slide-ratio));
+      box-shadow: inset 0 0 1px var(--figma-color-border-strong);
+      border-radius: 3px;
+      background-color: var(--figma-color-bg);
+      color: var(--color-text);
+      transform: translateY(calc((var(--nth-child) - 1) * -1.75px)) translateX(-50%) scaleX(calc(100% - var(--nth-child) * 2%));
+      opacity: calc(0.9 - var(--nth-child) * 0.1);
+      transition: transform 0.5s ease-in, opacity 0.5s ease-in;
+      overflow: hidden;
+      img {
+        height: 100%;
+        width: auto;
+      }
+      &:nth-child(1) { 
+        border: none; 
+        height: var(--slide-height);
+        width: calc(var(--slide-height) * var(--slide-ratio));
+      }
+    }
+    .slidePreview__slide_preState {
+      opacity: 0;
+      transform: scale(1) translateY(0) translateX(-50%);
+      transition: transform 0.5s ease-out, opacity 0.5s ease-out 0.1s;
+    }
+  }
+  .hidden {
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+  }
+}

@@ -1,0 +1,12 @@
+.note {
+  border: 1px solid var(--figma-color-border);
+  border-radius: var(--radius-default);
+  padding: var(--padding-md);
+  width: 100%;
+  font-weight: var(--font-weight-medium);
+  &:global(.info) {
+    border-color: var(--figma-color-border-brand);
+    background-color: var(--figma-color-bg-brand-tertiary);
+    color: var(--figma-color-text-brand-tertiary);
+  }
+}

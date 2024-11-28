@@ -1,0 +1,35 @@
+.input {
+  background-color: var(--figma-color-bg-secondary);
+  border: 1px solid  var(--figma-color-bg-secondary);
+  border-radius: var(--radius-default);
+  font-size: var(--font-size-small);
+  padding: var(--padding-sm);
+  color: var(--figma-color-text);
+  position: relative;
+  display: flex;
+  &:hover {
+    border: 1px solid var(--figma-color-border);
+  }
+  &:global(.hasFocus) {
+    border: 1px solid var(--figma-color-border-selected);
+  }
+  .input__input {
+    font-size: inherit;
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    flex: 1 1 100%;
+    &::placeholder {
+      color: var(--figma-color-text-disabled);
+    }
+    &:focus, &:focus-visible {
+      outline: none;
+    }
+  }
+  .input__suffix {
+    font-size: inherit;
+    color: var(--figma-color-text-disabled);
+    margin-right: var(--padding-sm);
+    flex: 0 0 auto;
+  }
+}

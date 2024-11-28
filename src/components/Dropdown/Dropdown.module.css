@@ -1,0 +1,56 @@
+.dropdown__button {
+  background: transparent;
+  color: var(--figma-color-text);
+  border: 1px solid var(--figma-color-border);
+  border-radius: var(--radius-default);
+  padding: var(--padding-sm) 24px var(--padding-sm) var(--padding-md);
+  display: block;
+  position: relative;
+  font-size: var(--font-size-small);
+  :global(.ArrowDownIcon) {
+    position: absolute;
+    top: -2px;
+    right: 0;
+  }
+  &[data-focus] {
+    outline: 2px solid var(--figma-color-border-selected-strong);
+  }
+  &[data-disabled] {
+    color: var(--figma-color-text-disabled);
+  }
+}
+.dropdown__list {
+  display: flex;
+  flex-direction: column;
+  background: #000000;
+  border-radius: var(--radius-large);
+  transform: translateY(calc(50% + 12px));
+  padding: var(--padding-md);
+  z-index: 999;
+  position: absolute;
+  &:focus-visible {
+    outline: 2px solid var(--figma-color-border-selected-strong);
+  }
+}
+.dropdown__list_item {
+  padding: var(--padding-sm) var(--padding-md) var(--padding-sm) 24px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-medium);
+  color: #ffffffe5;
+  border-radius: 6px;
+  background-color: transparent;
+  border: none;
+  position: relative;
+  &:hover {
+    background: var(--figma-color-bg-selected-strong);
+  }
+  &[data-focus] {
+    outline: none;
+    background: var(--figma-color-bg-selected-strong);
+  }
+  :global(.CheckIcon) {
+    position: absolute;
+    left: 4px;
+  }
+}
+

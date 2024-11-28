@@ -1,0 +1,20 @@
+.button {
+  border: 0;
+  border-radius: var(--radius-default);
+  padding: var(--padding-md);
+  width: 100%;
+  font-weight: var(--font-weight-medium);
+  &:global(.primary) {
+    background-color: var(--figma-color-bg-brand);
+    color: var(--figma-color-text-onbrand);
+    &:hover {
+      background-color: var(--figma-color-bg-brand-hover);
+    }
+    &:active {
+      background-color: var(--figma-color-bg-brand-pressed);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--figma-color-bg-brand-pressed);
+    }
+  }
+}
