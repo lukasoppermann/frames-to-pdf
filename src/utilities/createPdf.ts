@@ -10,12 +10,12 @@ const getOrientation = (width: number, height: number): 'landscape' | 'portrait'
 
 export const createPdf = async (frames: FrameExport[], settings: CreatePdfSettings) => {
   if (settings.format === "PDF") {
-    return await createPdfFromPdfs(frames, settings)
+    return await createPdfFromPdfs(frames)
   }
-  return createPdfFromImages(frames, settings)
+  return createPdfFromImages(frames)
 }
 
-const createPdfFromImages = (frames: FrameExport[], settings: CreatePdfSettings) => {
+const createPdfFromImages = (frames: FrameExport[]) => {
   // create new document
   const doc = new jsPDF({
     orientation: getOrientation(frames[0].width, frames[0].height),
@@ -25,7 +25,6 @@ const createPdfFromImages = (frames: FrameExport[], settings: CreatePdfSettings)
   // remove first page so that we need to condition in adding loop
   doc.deletePage(1)
   // add frames
-  console.log(frames.length, frames, settings)
   frames.forEach((frame) => {
     // add page
     doc.addPage([frame.width, frame.height], getOrientation(frame.width, frame.height),)
@@ -38,7 +37,7 @@ const createPdfFromImages = (frames: FrameExport[], settings: CreatePdfSettings)
   return urlData;
 }
 
-const createPdfFromPdfs = async (frames: FrameExport[], settings: CreatePdfSettings) => {
+const createPdfFromPdfs = async (frames: FrameExport[]) => {
   var merger = new PDFMerger();
   await Promise.all(frames.map(async (frame) => {
     // @ts-ignore

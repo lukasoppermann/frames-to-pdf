@@ -41,7 +41,13 @@ export default async function () {
     // open ui
     figma.showUI(__html__, { width: 300, height: 282, themeColors: true })
     // initialize settings
-    sendMessageToUi("initialize-settings", getFromStore(figma, "settings"));
+    sendMessageToUi("initialize-settings", {
+      ...{
+        format: "JPG",
+        scale: 2
+      },
+      ...getFromStore(figma, "settings")
+    });
     await getUserSelection(figma);
     // setup triggers
     figma.on('selectionchange', async () => {
@@ -53,18 +59,18 @@ export default async function () {
         case 'export' as sendMessageToCodeTypes:
           const selectedFrames = getSelectedFrames(figma);
           figma.notify(`Exporting ${selectedFrames.length} frames`, {timeout: 2000});
+          // get settings
           const settings = getFromStore(figma, "settings")
+          console.log("export settings", settings);
+          // export frames
           const frames = await exportSelection(selectedFrames, {format: settings.format, scale: settings.scale});
-          const filename = `${figma.root.name}.pdf`
           sendMessageToUi("download", {
             frames,
-            settings: {
-              ...settings,
-              filename
-            }
+            settings
           });
           break;
         case 'settings-update':
+          console.log("settings-update", msg.data);
           saveToStore(figma, "settings", msg.data);
           break;
       }

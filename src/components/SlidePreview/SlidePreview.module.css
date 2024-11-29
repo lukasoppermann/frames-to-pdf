@@ -1,20 +1,21 @@
 .slidePreview {
   --slide-height: 80px;
   --slide-container-height: calc(var(--slide-height) + 16px); /* 16px = stacked files*/
+  --slide-stack-offset: 3px;
+  /* main container */
   margin: var(--padding-md) 0 24px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
   height: var(--slide-container-height);
   position: relative;
   .slidePreview__noSlides {
     display: flex;
-    flex: 0 0 100px;
     justify-content: center;
     align-items: center;
     height: var(--slide-height);
-    width: 100px;
+    width: calc(var(--slide-height) * var(--slide-ratio));
     box-sizing: content-box;
     padding: var(--padding-sm);
     text-align: center;
@@ -28,42 +29,84 @@
     height: 100%;
     width: calc(var(--slide-height) * var(--slide-ratio));
     position: absolute;
-    :nth-child(1) { --nth-child: 1; }
-    :nth-child(2) { --nth-child: 2; }
-    :nth-child(3) { --nth-child: 3; }
-    :nth-child(4) { --nth-child: 4; }
-    :nth-child(5) { --nth-child: 5; }
-    :nth-child(6) { --nth-child: 6; }
-    :nth-child(7) { --nth-child: 7; }
-    :nth-child(8) { --nth-child: 8; }
-    :nth-child(9) { --nth-child: 9; }
-    :nth-child(10) { --nth-child: 10; }
+    :nth-child(1) { 
+      --nth-child: 1; 
+      --step-increment: 0;
+      --step-scale: 1;
+    }
+    :nth-child(2) { 
+      --nth-child: 2; 
+      --step-increment: -4px;
+      --step-scale: 0.94;
+    }
+    :nth-child(3) { --nth-child: 3; 
+      --step-increment: -7.5px;
+      --step-scale: 0.89;
+    }
+    :nth-child(4) { --nth-child: 4; 
+      --step-increment: -10.5px;
+      --step-scale: 0.85;
+    }
+    :nth-child(5) { --nth-child: 5; 
+      --step-increment: -13px;
+      --step-scale: 0.82;
+    }
+    :nth-child(6) { --nth-child: 6; 
+      --step-increment: -15px;
+      --step-scale: 0.80;
+    }
+    :nth-child(7) { --nth-child: 7; 
+      --step-increment: -16.5px;
+      --step-scale: 0.76;
+    }
+    :nth-child(8) { --nth-child: 8; 
+      --step-increment: -17.5px;
+      --step-scale: 0.7;
+    }
     .slidePreview__slide {
       z-index: calc(10 - var(--nth-child));
       position: absolute;
       bottom: 0;
       left: 50%;
       display: flex;
+      overflow: hidden;
       justify-content: center;
       align-items: center;
       height: calc(var(--slide-height));
       width: calc(var(--slide-height) * var(--slide-ratio));
       box-shadow: inset 0 0 1px var(--figma-color-border-strong);
       border-radius: 3px;
-      background-color: var(--figma-color-bg);
+      background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--figma-color-bg-inverse), transparent 80%) 4%), var(--figma-color-bg);
       color: var(--color-text);
-      transform: translateY(calc((var(--nth-child) - 1) * -1.75px)) translateX(-50%) scaleX(calc(100% - var(--nth-child) * 2%));
-      opacity: calc(0.9 - var(--nth-child) * 0.1);
+      /* transform: translateY(var(--step-increment)) translateX(-50%) scaleX(calc(100% - var(--nth-child) * 2%)); */
+      transform: translateY(var(--step-increment)) translateX(-50%) scaleX(var(--step-scale));
+      opacity: calc(1 - (var(--nth-child) - 1) * 0.15);
       transition: transform 0.5s ease-in, opacity 0.5s ease-in;
-      overflow: hidden;
+      &:before {
+        display: block;
+        position: absolute;
+        top: 0;
+        content: "";
+        height: 100%;
+        width: 100%;
+        background: var(--figma-color-bg-inverse);
+        opacity: 0.02;
+      }
       img {
+        border-radius: 3px;
         height: 100%;
         width: auto;
       }
       &:nth-child(1) { 
-        border: none; 
+        border: none;
+        border-radius: 3px;
         height: var(--slide-height);
         width: calc(var(--slide-height) * var(--slide-ratio));
+        transform: translateY(0) translateX(-50%) scaleX(calc(100% - var(--nth-child) * 2%));
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+        &:before {
+          display: none;
+        }
       }
     }
     .slidePreview__slide_preState {

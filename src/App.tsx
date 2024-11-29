@@ -26,6 +26,7 @@ const App = () => {
     if(key === "filename" && value === "") value = undefined
     const newSettings = {...settings, [key]: value}
     setSettings(newSettings)
+    
     sendMessageToCode("settings-update", newSettings)
   }
 
@@ -41,10 +42,11 @@ const App = () => {
         setSettings(data as Settings)
       }
       if (type === "download") {
-        const { frames, settings } = data as {frames: FrameExport[], settings: CreatePdfSettings}
+        const { frames, settings: userSettings } = data as {frames: FrameExport[], settings: CreatePdfSettings}
         const link = document.getElementById('downloadLink') as HTMLAnchorElement;
-        const urlData = await createPdf(frames, settings)
-        downloadFilesAsPdf(link, urlData, settings.filename)
+        const urlData = await createPdf(frames, userSettings)
+        // download file
+        downloadFilesAsPdf(link, urlData, userSettings?.filename !== undefined ? userSettings.filename : pagename)
       }
   }}, [])
  
@@ -52,14 +54,14 @@ const App = () => {
 		<div className={styles.App}>
     <SlidePreview slides={selectedFrames.length} width={selectedFrames[0]?.width} height={selectedFrames[0]?.height} preview={previewImage}/>
     <div className={styles.AppSettings}>
-      <Input className='input__filename' suffix=".pdf" value={settings.filename} placeholder={pagename} onChange={(e) => {updateSettings("filename", e.target.value)}}/>
-      <Dropdown selected={settings.format} onChange={(value) => updateSettings("format", value)}
+      <Input className='input__filename' suffix=".pdf" value={settings?.filename || ""} placeholder={pagename} onChange={(e) => {updateSettings("filename", e.target.value)}}/>
+      <Dropdown selected={settings?.format} onChange={(value) => updateSettings("format", value)}
       options={{
         "JPG": "JPG",
         "PNG": "PNG",
         "PDF": "PDF"
       }}/>
-      <Dropdown selected={`${settings.scale}`} disabled={settings.format === "PDF"} onChange={(value) => updateSettings("scale", value)}
+      <Dropdown selected={`${settings?.scale}`} disabled={settings?.format === "PDF"} onChange={(value) => updateSettings("scale", value)}
       options={{
         1: "1x",
         2: "2x",
