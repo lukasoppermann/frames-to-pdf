@@ -32,10 +32,11 @@
 	},
 	"plugma": {
 		"manifest": {
-			"id": "frames-to-pdf-replace",
-			"name": "export frames",
+			"id": "1444437441956499757",
+			"name": "Frames to PDF",
 			"main": "src/main.ts",
 			"ui": "src/ui.tsx",
+      "documentAccess": "dynamic-page",
 			"editorType": [
 				"figma",
 				"figjam"

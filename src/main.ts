@@ -3,8 +3,10 @@ import { sendMessageToCodeTypes, sendMessageToUi } from './utilities/sendMessage
 import { sortFramesByPosition } from './utilities/sortFramesByPosition';
 import { getFromStore, saveToStore } from './utilities/store';
 
-const getSelectedFrames = (figma: PluginAPI): FrameNode[] => {
-  const selectedFrames = figma.currentPage.selection.filter(node => node.type === 'FRAME' && node.parent === figma.currentPage) as FrameNode[]
+const getSelectedFrames = async (figma: PluginAPI): Promise<FrameNode[]> => {
+  const page = figma.currentPage
+  await page.loadAsync();
+  const selectedFrames = [...page.selection].filter(node => node.type === 'FRAME' && node.parent === figma.currentPage) as FrameNode[]
 
   return sortFramesByPosition(selectedFrames);
 }
@@ -12,7 +14,7 @@ const getSelectedFrames = (figma: PluginAPI): FrameNode[] => {
 
 
 const getUserSelection = async (figma: PluginAPI) => {
-  const selectedFrames = getSelectedFrames(figma);
+  const selectedFrames = await getSelectedFrames(figma);
   let previewUint8Array = undefined
   if (selectedFrames.length === 0) {
     figma.notify('Select frames to export', {timeout: 2000});
@@ -57,11 +59,10 @@ export default async function () {
     figma.ui.onmessage = async (msg) => {
       switch (msg.type) {
         case 'export' as sendMessageToCodeTypes:
-          const selectedFrames = getSelectedFrames(figma);
+          const selectedFrames = await getSelectedFrames(figma);
           figma.notify(`Exporting ${selectedFrames.length} frames`, {timeout: 2000});
           // get settings
           const settings = getFromStore(figma, "settings")
-          console.log("export settings", settings);
           // export frames
           const frames = await exportSelection(selectedFrames, {format: settings.format, scale: settings.scale});
           sendMessageToUi("download", {
@@ -70,19 +71,8 @@ export default async function () {
           });
           break;
         case 'settings-update':
-          console.log("settings-update", msg.data);
           saveToStore(figma, "settings", msg.data);
           break;
       }
     }
-  // figma.on('run', ({ command }: RunEvent) => {
-  //   switch (command) {
-  //     case "export":
-  //       getUserSelection(figma);
-  //       break
-  //     default:
-  //       loadUi(figma)
-  //       break
-  //   }
-  // });
 }

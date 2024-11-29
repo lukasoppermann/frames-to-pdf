@@ -7,7 +7,7 @@ import { downloadFilesAsPdf } from './utilities/downloadFilesAsPdf'
 import { createPdf, CreatePdfSettings } from './utilities/createPdf'
 import { Dropdown } from './components/Dropdown/Dropdown'
 import { FrameExport } from './utilities/exportSelection'
-import Input from './components/Input/input';
+import Input from './components/Input/Input';
 import SlidePreview from './components/SlidePreview/SlidePreview';
 
 export type Settings = {
